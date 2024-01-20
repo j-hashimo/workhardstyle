@@ -7,7 +7,7 @@ const cors = require('cors');
 
 // Import routes
 // const userRoutes = require('./routes/userRoutes');
-// const workoutRoutes = require('./routes/workoutRoutes');
+const workoutRoutes = require('./routes/workoutRoutes');
 
 // Import middleware
 // const errorHandler = require('./utils/errorHandler');
@@ -16,6 +16,11 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
+
+app.use((req, res, next) => {
+    console.log(req.path, req.method);
+    next();
+});
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -28,7 +33,7 @@ app.use(bodyParser.json()); // Parses incoming requests with JSON payloads
 
 // API Routes
 // app.use('/api/users', userRoutes);
-// app.use('/api/workouts', workoutRoutes);
+app.use('/api/workouts', workoutRoutes);
 
 
 // Start the server
