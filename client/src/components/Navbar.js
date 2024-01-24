@@ -1,22 +1,30 @@
 // Navbar.js
 
-import React from 'react';
+import React, { useState } from 'react';
+import WorkoutForm from './WorkoutForm';
+import WorkoutList from './WorkoutList';
 
 const Navbar = () => {
+    const [currentPage, setCurrentPage] = useState('');
+
     return (
-        <nav className="bg-gray-800 p-4">
-            <div className="container mx-auto">
-                <div className="flex justify-between">
-                    <div>
-                        <a href="/" className="text-white text-lg font-semibold">Workout Tracker</a>
-                    </div>
-                    <div>
-                        <a href="/workouts" className="text-gray-300 hover:text-white px-3">Workouts</a>
-                        <a href="/login" className="text-gray-300 hover:text-white px-3">Login</a>
+        <div>
+            <nav className="bg-gray-800 p-4">
+                <div className="container mx-auto">
+                    <div className="flex justify-between">
+                        <div className="text-white text-lg font-semibold">Workout Tracker</div>
+                        <div>
+                            <button onClick={() => setCurrentPage('workouts')} className="text-gray-300 hover:text-white px-3">Workouts</button>
+                            <button onClick={() => setCurrentPage('add-workout')} className="text-gray-300 hover:text-white px-3">Add Workout</button>
+                        </div>
                     </div>
                 </div>
+            </nav>
+            <div>
+                {currentPage === 'workouts' && <WorkoutList />}
+                {currentPage === 'add-workout' && <WorkoutForm />}
             </div>
-        </nav>
+        </div>
     );
 };
 
