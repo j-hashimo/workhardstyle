@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 // Import routes
-// const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
 const workoutRoutes = require('./routes/workoutRoutes');
 
 // Import middleware
@@ -32,7 +32,7 @@ app.use(cors()); // Enables CORS
 app.use(bodyParser.json()); // Parses incoming requests with JSON payloads
 
 // API Routes
-// app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/workouts', workoutRoutes);
 
 
