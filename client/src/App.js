@@ -8,6 +8,8 @@ import HomePage from './components/HomePage';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Navbar from './components/Navbar';
+import WorkoutList from './components/WorkoutList';
+import WorkoutForm from './components/WorkoutForm';
 
 const App = () => {
   return (
@@ -19,6 +21,8 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/workoutlist" element={<WorkoutList />} />
+            <Route path="/addworkout" element={<WorkoutForm />} />
             {/* Add other routes here */}
           </Routes>
         </div>

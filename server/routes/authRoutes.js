@@ -1,16 +1,15 @@
-// authRoutes.js in /server/routes
-
 const express = require('express');
-const bcrypt = require('bcryptjs');
+const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
+const User = require('../models/userModel'); // Adjust the path according to your project structure
 const router = express.Router();
 const { JWT_SECRET } = process.env;
 
+// Route to register (signup) a new user
 router.post('/signup', async (req, res) => {
     try {
         const { email, password } = req.body;
-        
+
         // Check if the user already exists
         let user = await User.findOne({ email });
         if (user) {
@@ -19,9 +18,8 @@ router.post('/signup', async (req, res) => {
 
         user = new User({ email, password });
 
-        // Hash the password
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
+        // Hash the password using Argon2
+        user.password = await argon2.hash(password);
 
         await user.save();
 
@@ -39,24 +37,20 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+// Route to login a user
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    // Basic validation
-    if (!email || !password) {
-        return res.status(400).json({ msg: 'Please enter all fields' });
-    }
-
     try {
+        const { email, password } = req.body;
+
         let user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ msg: 'Invalid credentials 1' });
+            return res.status(400).json({ msg: 'Invalid credentials' });
         }
 
-        // Compare the provided password with the hashed password in the database
-        const isMatch = await bcrypt.compare(password, user.password);
+        // Verify the password using Argon2
+        const isMatch = await argon2.verify(user.password, password);
         if (!isMatch) {
-            return res.status(400).json({ msg: 'Invalid credentials 2' });
+            return res.status(400).json({ msg: 'Invalid credentials' });
         }
 
         // Create payload for JWT
@@ -69,7 +63,7 @@ router.post('/login', async (req, res) => {
         });
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).json({ message: error.message || 'Server error' });
+        res.status(500).send('Server error');
     }
 });
 
