@@ -1,8 +1,8 @@
 // Login.js in /src/components
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authSuccess, authFail } from '../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,14 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/workoutlist'); // Redirect to WorkoutList if authenticated
+    }
+  }, [isAuthenticated, navigate]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
