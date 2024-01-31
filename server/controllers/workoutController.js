@@ -6,7 +6,14 @@ const Workout = require('../models/workoutModel');
 exports.createWorkout = async (req, res, next) => {
     try {
         const { name, weight, sets, reps, machine_settings } = req.body;
-        const newWorkout = await Workout.create({ name, weight, sets, reps, machine_settings });
+        const newWorkout = await Workout.create({ 
+            user: req.user._id,
+            name, 
+            weight, 
+            sets, 
+            reps, 
+            machine_settings 
+        });
         res.status(201).json(newWorkout);
     } catch (error) {
         next(error);
@@ -16,7 +23,7 @@ exports.createWorkout = async (req, res, next) => {
 // Get all workouts
 exports.getAllWorkouts = async (req, res, next) => {
     try {
-        const workouts = await Workout.find({});
+        const workouts = await Workout.find({user: req.user.id});
         res.status(200).json(workouts);
     } catch (error) {
         next(error);
@@ -26,7 +33,7 @@ exports.getAllWorkouts = async (req, res, next) => {
 // Get a workout by ID
 exports.getWorkoutById = async (req, res, next) => {
     try {
-        const workout = await Workout.findById(req.params.id);
+        const workout = await Workout.findOne({ _id: req.params.id, user: req.user.id });
         if (!workout) {
             return res.status(404).json({ message: 'Workout not found' });
         }
@@ -40,9 +47,14 @@ exports.getWorkoutById = async (req, res, next) => {
 exports.updateWorkoutById = async (req, res, next) => {
     try {
         const { name, weight, sets, reps, machine_settings } = req.body;
-        const updatedWorkout = await Workout.findByIdAndUpdate(req.params.id, { name, weight, sets, reps, machine_settings }, { new: true });
+        // Find the workout and update it only if the user owns the workout
+        const updatedWorkout = await Workout.findOneAndUpdate(
+            { _id: req.params.id, user: req.user.id }, 
+            { name, weight, sets, reps, machine_settings }, 
+            { new: true }
+        );
         if (!updatedWorkout) {
-            return res.status(404).json({ message: 'Workout not found' });
+            return res.status(404).json({ message: 'Workout not found or not authorized' });
         }
         res.status(200).json(updatedWorkout);
     } catch (error) {
@@ -53,9 +65,10 @@ exports.updateWorkoutById = async (req, res, next) => {
 // Delete a workout by ID
 exports.deleteWorkoutById = async (req, res, next) => {
     try {
-        const workout = await Workout.findByIdAndDelete(req.params.id);
+        // Find the workout and delete it only if the user owns the workout
+        const workout = await Workout.findOneAndDelete({ _id: req.params.id, user: req.user.id });
         if (!workout) {
-            return res.status(404).json({ message: 'Workout not found' });
+            return res.status(404).json({ message: 'Workout not found or not authorized' });
         }
         res.status(204).send();
     } catch (error) {

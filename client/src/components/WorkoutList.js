@@ -13,7 +13,14 @@ const WorkoutList = () => {
 
     const fetchWorkouts = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/workouts');
+            const token = localStorage.getItem('token'); // Retrieve the token
+            
+            const config = {
+                headers: {
+                    'x-auth-token': token
+                }
+            };
+            const response = await axios.get('http://localhost:5000/api/workouts', config);
             setWorkouts(response.data);
         } catch (error) {
             console.error('Error fetching workouts:', error);
@@ -22,7 +29,13 @@ const WorkoutList = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/workouts/${id}`);
+            const token = localStorage.getItem('token');
+            const config = {
+                headers: {
+                    'x-auth-token': token
+                }
+            };
+            await axios.delete(`http://localhost:5000/api/workouts/${id}`, config);
             fetchWorkouts();
         } catch (error) {
             console.error('Error deleting workout:', error);
@@ -35,7 +48,13 @@ const WorkoutList = () => {
 
     const handleSave = async () => {
         try {
-            await axios.put(`http://localhost:5000/api/workouts/${editingWorkout._id}`, editingWorkout);
+            const token = localStorage.getItem('token');
+            const config = {
+                headers: {
+                    'x-auth-token': token
+                }
+            };
+            await axios.put(`http://localhost:5000/api/workouts/${editingWorkout._id}`, editingWorkout, config);
             setEditingWorkout(null);
             fetchWorkouts();
         } catch (error) {

@@ -3,8 +3,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-
-
 const WorkoutForm = ({ onAdd }) => {
     const [name, setName] = useState('');
     const [weight, setWeight] = useState(0);
@@ -16,7 +14,18 @@ const WorkoutForm = ({ onAdd }) => {
         e.preventDefault();
         try {
             const workout = { name, weight, sets, reps, machine_settings: machineSettings };
-            const response = await axios.post('http://localhost:5000/api/workouts', workout);
+            const token = localStorage.getItem('token'); // Retrieve the token
+
+            
+
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': token // Include the token in the request header
+                }
+            };
+
+            const response = await axios.post('http://localhost:5000/api/workouts', workout, config);
             onAdd(response.data);
         } catch (error) {
             console.error('Error adding workout:', error);
