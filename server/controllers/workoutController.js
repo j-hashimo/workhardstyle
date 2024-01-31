@@ -6,13 +6,16 @@ const Workout = require('../models/workoutModel');
 exports.createWorkout = async (req, res, next) => {
     try {
         const { name, weight, sets, reps, machine_settings } = req.body;
-        const newWorkout = await Workout.create({ 
-            user: req.user._id,
-            name, 
-            weight, 
-            sets, 
-            reps, 
-            machine_settings 
+        // Add the user ID from the verified token to the workout
+        const userId = req.user.id; // Assuming the user ID is stored in req.user by your auth middleware
+
+        const newWorkout = await Workout.create({
+            user: userId,
+            name,
+            weight,
+            sets,
+            reps,
+            machine_settings
         });
         res.status(201).json(newWorkout);
     } catch (error) {
