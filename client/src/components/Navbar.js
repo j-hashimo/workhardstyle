@@ -1,10 +1,11 @@
 // Navbar.js
 
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import WorkoutForm from './WorkoutForm';
 import WorkoutList from './WorkoutList';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../redux/authSlice';
 
 const Navbar = () => {
     const [currentPage, setCurrentPage] = useState('');
@@ -14,7 +15,13 @@ const Navbar = () => {
         navigate(path); // Function to navigate to the specified path
     };
 
-    
+    const userEmail = useSelector((state) => state.auth.user?.email); // Assuming user email is stored in auth state
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/');
+    };
 
     return (
         <div>
@@ -25,10 +32,17 @@ const Navbar = () => {
                             <button onClick={() => handleNavigate('/')} className="text-gray-300 hover:text-white px-3">WorkHardStyle</button>
                         </div>
                         <div>
-                            {isAuthenticated && (
+                            {isAuthenticated ? (
                                 <>
-                                    <button onClick={() => handleNavigate('/workoutlist')} className="text-gray-300 hover:text-white px-3">Workouts</button>
-                                    <button onClick={() => handleNavigate('/addworkout')} className="text-gray-300 hover:text-white px-3">Add Workout</button>
+                                    <button onClick={() => handleNavigate('/workoutlist')} className="mx-2 text-white">Workouts</button>
+                                    <button onClick={() => handleNavigate('/addworkout')} className="mx-2 text-white">Add Workout</button>
+                                    <span className="mx-2 font-semibold">{userEmail}</span>
+                                    <button onClick={handleLogout} className="bg-red-500 px-3 py-1 rounded">Logout</button>
+                                </>
+                            ) : (
+                                <>
+                                    <button onClick={() => navigate('/login')} className="mx-2">Login</button>
+                                    <button onClick={() => navigate('/signup')} className="mx-2">Signup</button>
                                 </>
                             )}
                         </div>
@@ -36,10 +50,7 @@ const Navbar = () => {
                     </div>
                 </div>
             </nav>
-            <div>
-                {currentPage === 'workouts' && <WorkoutList />}
-                {currentPage === 'add-workout' && <WorkoutForm />}
-            </div>
+            
         </div>
     );
 };
