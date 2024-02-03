@@ -36,7 +36,7 @@ const Navbar = () => {
                                 <>
                                     <button onClick={() => handleNavigate('/workoutlist')} className="mx-2 text-white">Workouts</button>
                                     <button onClick={() => handleNavigate('/addworkout')} className="mx-2 text-white">Add Workout</button>
-                                    <span className="mx-2 font-semibold">{userEmail}</span>
+                                    <p className="mx-2 font-semibold text-white">{userEmail}</p>
                                     <button onClick={handleLogout} className="bg-red-500 px-3 py-1 rounded">Logout</button>
                                 </>
                             ) : (

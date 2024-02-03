@@ -59,12 +59,21 @@ router.post('/login', async (req, res) => {
         // Sign the JWT token with the user ID payload
         jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
             if (err) throw err;
-            res.json({ token });
+            // Include user information in the response
+            res.json({
+                token,
+                user: {
+                    id: user.id, // Include the user ID
+                    email: user.email, // Include the user's email
+                    // Add any other user details you want to return
+                }
+            });
         });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).send('Server error');
     }
 });
+
 
 module.exports = router;

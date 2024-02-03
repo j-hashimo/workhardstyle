@@ -35,10 +35,12 @@ const authSlice = createSlice({
         // Called upon successful authentication (login/register).
         authSuccess: (state, action) => {
             localStorage.setItem('token', action.payload.token); // Saving token to localStorage.
-            state.token = action.payload.token;                 // Updating token in the state.
-            state.isAuthenticated = true;                       // Setting user as authenticated.
-            state.loading = false;                              // Loading is complete.
+            state.token = action.payload.token;                   // Updating token in the state.
+            state.isAuthenticated = true;                         // Setting user as authenticated.
+            state.loading = false;                                // Loading is complete.
+            state.user = action.payload.user;                     // Storing user information in the state.
         },
+        
         // Called when authentication fails.
         authFail: state => {
             localStorage.removeItem('token'); // Removing token from localStorage.
