@@ -2,21 +2,21 @@
 
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import WorkoutForm from './WorkoutForm';
-import WorkoutList from './WorkoutList';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../redux/authSlice';
+import { Flex, Box, Button, Text, IconButton } from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
 
 const Navbar = () => {
     const [currentPage, setCurrentPage] = useState('');
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated); // Retrieve authentication status
-    const navigate = useNavigate(); // Hook for navigation
-    const handleNavigate = (path) => {
-        navigate(path); // Function to navigate to the specified path
-    };
-
-    const userEmail = useSelector((state) => state.auth.user?.email); // Assuming user email is stored in auth state
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const userEmail = useSelector((state) => state.auth.user?.email);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const handleNavigate = (path) => {
+        navigate(path);
+    };
 
     const handleLogout = () => {
         dispatch(logout());
@@ -24,34 +24,47 @@ const Navbar = () => {
     };
 
     return (
-        <div>
-            <nav className="bg-gray-800 p-4">
-                <div className="container mx-auto">
-                    <div className="flex justify-between items-center">
-                        <div className="text-white text-lg font-semibold">
-                            <button onClick={() => handleNavigate('/')} className="text-gray-300 hover:text-white px-3">WorkHardStyle</button>
-                        </div>
-                        <div>
-                            {isAuthenticated ? (
-                                <>
-                                    <button onClick={() => handleNavigate('/workoutlist')} className="mx-2 text-white">Workouts</button>
-                                    <button onClick={() => handleNavigate('/addworkout')} className="mx-2 text-white">Add Workout</button>
-                                    <p className="mx-2 font-semibold text-white">{userEmail}</p>
-                                    <button onClick={handleLogout} className="bg-red-500 px-3 py-1 rounded">Logout</button>
-                                </>
-                            ) : (
-                                <>
-                                    <button onClick={() => navigate('/login')} className="mx-2">Login</button>
-                                    <button onClick={() => navigate('/signup')} className="mx-2">Signup</button>
-                                </>
-                            )}
-                        </div>
-                    
-                    </div>
-                </div>
-            </nav>
-            
-        </div>
+        <Box bg="gray.800" px={4}>
+            <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+                <IconButton
+                    size={'md'}
+                    icon={<HamburgerIcon />}
+                    aria-label={'Open Menu'}
+                    display={{ md: 'none' }}
+                />
+                <Box>
+                    <Button variant={'ghost'} colorScheme="teal" onClick={() => handleNavigate('/')}>
+                        WorkHardStyle
+                    </Button>
+                </Box>
+
+                <Flex alignItems={'center'}>
+                    {isAuthenticated ? (
+                        <>
+                            <Button variant={'ghost'} colorScheme="teal" onClick={() => handleNavigate('/workoutlist')}>
+                                Workouts
+                            </Button>
+                            <Button variant={'ghost'} colorScheme="teal" onClick={() => handleNavigate('/addworkout')}>
+                                Add Workout
+                            </Button>
+                            <Text color="white" px={3}>{userEmail}</Text>
+                            <Button colorScheme="red" onClick={handleLogout}>
+                                Logout
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button colorScheme="teal" variant={'ghost'} onClick={() => navigate('/login')}>
+                                Login
+                            </Button>
+                            <Button colorScheme="teal" variant={'ghost'} onClick={() => navigate('/signup')}>
+                                Signup
+                            </Button>
+                        </>
+                    )}
+                </Flex>
+            </Flex>
+        </Box>
     );
 };
 
