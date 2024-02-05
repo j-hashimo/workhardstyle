@@ -24,7 +24,7 @@ const Navbar = () => {
     };
 
     return (
-        <Box bg="gray.800" px={4}>
+        <Box bg="black" px={4}>
             <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
                 <IconButton
                     size={'md'}
@@ -33,7 +33,7 @@ const Navbar = () => {
                     display={{ md: 'none' }}
                 />
                 <Box>
-                    <Button variant={'ghost'} colorScheme="teal" onClick={() => handleNavigate('/')}>
+                    <Button variant={'ghost'} colorScheme="whiteAlpha" onClick={() => handleNavigate('/')}>
                         WorkHardStyle
                     </Button>
                 </Box>
@@ -41,10 +41,10 @@ const Navbar = () => {
                 <Flex alignItems={'center'}>
                     {isAuthenticated ? (
                         <>
-                            <Button variant={'ghost'} colorScheme="teal" onClick={() => handleNavigate('/workoutlist')}>
+                            <Button variant={'ghost'} colorScheme="whiteAlpha" onClick={() => handleNavigate('/workoutlist')}>
                                 Workouts
                             </Button>
-                            <Button variant={'ghost'} colorScheme="teal" onClick={() => handleNavigate('/addworkout')}>
+                            <Button variant={'ghost'} colorScheme="whiteAlpha" onClick={() => handleNavigate('/addworkout')}>
                                 Add Workout
                             </Button>
                             <Text color="white" px={3}>{userEmail}</Text>
@@ -54,10 +54,10 @@ const Navbar = () => {
                         </>
                     ) : (
                         <>
-                            <Button colorScheme="teal" variant={'ghost'} onClick={() => navigate('/login')}>
+                            <Button colorScheme="gray" variant={'ghost'} onClick={() => navigate('/login')}>
                                 Login
                             </Button>
-                            <Button colorScheme="teal" variant={'ghost'} onClick={() => navigate('/signup')}>
+                            <Button colorScheme="gray" variant={'ghost'} onClick={() => navigate('/signup')}>
                                 Signup
                             </Button>
                         </>

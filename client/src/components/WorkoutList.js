@@ -2,10 +2,16 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Box, VStack, HStack, Input, Button, Text, useColorModeValue, useColorMode, IconButton } from '@chakra-ui/react';
+import { EditIcon, DeleteIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
 const WorkoutList = () => {
     const [workouts, setWorkouts] = useState([]);
     const [editingWorkout, setEditingWorkout] = useState(null);
+
+    const { colorMode } = useColorMode();
+    const bgColor = useColorModeValue('gray.100', 'gray.700');
+    const borderColor = useColorModeValue('gray.300', 'gray.600');
 
     useEffect(() => {
         fetchWorkouts();
@@ -67,35 +73,40 @@ const WorkoutList = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <h2 className="text-xl font-bold mb-4">Your Workouts</h2>
-            <div className="space-y-4">
+        <Box className="container mx-auto p-4">
+            <Text fontSize="2xl" fontWeight="bold" mb={4}>Your Workouts</Text>
+            <VStack spacing={4}>
                 {workouts.map(workout => (
-                    <div key={workout._id} className="border p-4 rounded">
+                    <Box key={workout._id} p={4} bg={bgColor} rounded="md" borderWidth="1px" borderColor={borderColor}>
                         {editingWorkout && editingWorkout._id === workout._id ? (
-                            <div>
-                                <input type="text" value={editingWorkout.name} onChange={(e) => handleChange(e, 'name')} className="p-2 border border-gray-300 rounded" />
-                                <input type="number" value={editingWorkout.weight} onChange={(e) => handleChange(e, 'weight')} className="p-2 border border-gray-300 rounded" />
-                                <input type="number" value={editingWorkout.sets} onChange={(e) => handleChange(e, 'sets')} className="p-2 border border-gray-300 rounded" />
-                                <input type="number" value={editingWorkout.reps} onChange={(e) => handleChange(e, 'reps')} className="p-2 border border-gray-300 rounded" />
-                                <input type="text" value={editingWorkout.machine_settings} onChange={(e) => handleChange(e, 'machine_settings')} className="p-2 border border-gray-300 rounded" />
-                                <button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded">Save Changes</button>
-                            </div>
+                            <VStack spacing={3}>
+                                <Input type="text" value={editingWorkout.name} onChange={(e) => handleChange(e, 'name')} />
+                                <HStack spacing={3}>
+                                    <Input type="number" value={editingWorkout.weight} onChange={(e) => handleChange(e, 'weight')} />
+                                    <Input type="number" value={editingWorkout.sets} onChange={(e) => handleChange(e, 'sets')} />
+                                    <Input type="number" value={editingWorkout.reps} onChange={(e) => handleChange(e, 'reps')} />
+                                </HStack>
+                                <Input type="text" value={editingWorkout.machine_settings} onChange={(e) => handleChange(e, 'machine_settings')} />
+                                <Button leftIcon={<CheckIcon />} colorScheme="blue" onClick={handleSave}>Save Changes</Button>
+                                <IconButton aria-label="Cancel edit" icon={<CloseIcon />} onClick={() => setEditingWorkout(null)} />
+                            </VStack>
                         ) : (
-                            <div>
-                                <h3 className="text-lg font-semibold">{workout.name}</h3>
-                                <p>Weight: {workout.weight}</p>
-                                <p>Sets: {workout.sets}</p>
-                                <p>Reps: {workout.reps}</p>
-                                {workout.machine_settings && <p>Machine Settings: {workout.machine_settings}</p>}
-                                <button onClick={() => handleEdit(workout)} className="bg-yellow-500 text-white p-2 rounded">Edit</button>
-                                <button onClick={() => handleDelete(workout._id)} className="bg-red-500 text-white p-2 rounded">Delete</button>
-                            </div>
+                            <VStack align="start" spacing={3}>
+                                <Text fontSize="lg" fontWeight="semibold">{workout.name}</Text>
+                                <Text>Weight: {workout.weight}</Text>
+                                <Text>Sets: {workout.sets}</Text>
+                                <Text>Reps: {workout.reps}</Text>
+                                {workout.machine_settings && <Text>Machine Settings: {workout.machine_settings}</Text>}
+                                <HStack spacing={3}>
+                                    <Button leftIcon={<EditIcon />} colorScheme="yellow" onClick={() => handleEdit(workout)}>Edit</Button>
+                                    <IconButton aria-label="Delete workout" icon={<DeleteIcon />} colorScheme="red" onClick={() => handleDelete(workout._id)} />
+                                </HStack>
+                            </VStack>
                         )}
-                    </div>
+                    </Box>
                 ))}
-            </div>
-        </div>
+            </VStack>
+        </Box>
     );
 };
 
