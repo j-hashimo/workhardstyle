@@ -1,18 +1,18 @@
 // Navbar.js
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../redux/authSlice';
-import { Flex, Box, Button, Text, IconButton } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { Flex, Box, Button, Text, IconButton, useColorMode } from '@chakra-ui/react';
+import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 
 const Navbar = () => {
-    const [currentPage, setCurrentPage] = useState('');
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const userEmail = useSelector((state) => state.auth.user?.email);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { colorMode, toggleColorMode } = useColorMode();
 
     const handleNavigate = (path) => {
         navigate(path);
@@ -24,7 +24,7 @@ const Navbar = () => {
     };
 
     return (
-        <Box bg="black" px={4}>
+        <Box bg={colorMode === 'dark' ? 'gray.800' : 'white'} px={4}>
             <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
                 <IconButton
                     size={'md'}
@@ -39,6 +39,13 @@ const Navbar = () => {
                 </Box>
 
                 <Flex alignItems={'center'}>
+                    <IconButton
+                        size={'md'}
+                        icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />}
+                        aria-label={'Toggle Color Mode'}
+                        onClick={toggleColorMode}
+                        mr={4}
+                    />
                     {isAuthenticated ? (
                         <>
                             <Button variant={'ghost'} colorScheme="whiteAlpha" onClick={() => handleNavigate('/workoutlist')}>
