@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../redux/authSlice';
 import { Flex, Box, Button, Text, IconButton, useColorMode } from '@chakra-ui/react';
 import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
+import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics'; // Import the icon
+
 
 const Navbar = () => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -32,11 +34,12 @@ const Navbar = () => {
                     aria-label={'Open Menu'}
                     display={{ md: 'none' }}
                 />
-                <Box>
+                <Flex alignItems={'center'}>
+                    <SportsGymnasticsIcon style={{ color: colorMode === 'dark' ? 'white' : 'black', marginRight: '8px' }} />
                     <Button variant={'ghost'} colorScheme="whiteAlpha" onClick={() => handleNavigate('/')}>
                         WorkHardStyle
                     </Button>
-                </Box>
+                </Flex>
 
                 <Flex alignItems={'center'}>
                     <IconButton
