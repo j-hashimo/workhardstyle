@@ -36,7 +36,7 @@ const Navbar = () => {
                 />
                 <Flex alignItems={'center'}>
                     <SportsGymnasticsIcon style={{ color: colorMode === 'dark' ? 'white' : 'black', marginRight: '8px' }} />
-                    <Button variant={'ghost'} colorScheme="whiteAlpha" onClick={() => handleNavigate('/')}>
+                    <Button variant={'ghost'} colorScheme="gray" variant={'ghost'} onClick={() => handleNavigate('/')}>
                         WorkHardStyle
                     </Button>
                 </Flex>
