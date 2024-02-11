@@ -51,10 +51,10 @@ const Navbar = () => {
                     />
                     {isAuthenticated ? (
                         <>
-                            <Button variant={'ghost'} colorScheme="whiteAlpha" onClick={() => handleNavigate('/workoutlist')}>
+                            <Button colorScheme="gray" variant={'ghost'} onClick={() => handleNavigate('/workoutlist')}>
                                 Workouts
                             </Button>
-                            <Button variant={'ghost'} colorScheme="whiteAlpha" onClick={() => handleNavigate('/addworkout')}>
+                            <Button colorScheme="gray" variant={'ghost'} onClick={() => handleNavigate('/addworkout')}>
                                 Add Workout
                             </Button>
                             <Text color="white" px={3}>{userEmail}</Text>
