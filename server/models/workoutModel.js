@@ -28,6 +28,10 @@ const workoutSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    muscleGroup: { // Optional muscle group field
+        type: String,
+        required: false
+    },
 }, {
     timestamps: true // Adds createdAt and updatedAt timestamps
 });
