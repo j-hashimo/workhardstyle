@@ -11,7 +11,8 @@ import {
   FormLabel,
   Heading,
   useColorModeValue,
-  Container
+  Container,
+  Select,
 } from '@chakra-ui/react';
 
 const WorkoutForm = ({ onAdd }) => {
@@ -20,11 +21,12 @@ const WorkoutForm = ({ onAdd }) => {
   const [sets, setSets] = useState(0);
   const [reps, setReps] = useState(0);
   const [machineSettings, setMachineSettings] = useState('');
+  const [muscleGroup, setMuscleGroup] = useState(''); // New state for muscle group
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const workout = { name, weight, sets, reps, machine_settings: machineSettings };
+      const workout = { name, weight, sets, reps, machine_settings: machineSettings, muscleGroup };
       const token = localStorage.getItem('token');
 
       const config = {
@@ -105,6 +107,18 @@ const WorkoutForm = ({ onAdd }) => {
                   onChange={(e) => setMachineSettings(e.target.value)} 
                   placeholder="Machine Settings" 
                 />
+              </FormControl>
+              <FormControl id="muscleGroup">
+                <FormLabel>Muscle Group (Optional)</FormLabel>
+                <Select placeholder="Select muscle group" value={muscleGroup} onChange={(e) => setMuscleGroup(e.target.value)}>
+                  <option value="chest">Chest</option>
+                  <option value="back">Back</option>
+                  <option value="legs">Legs</option>
+                  <option value="arms">Arms</option>
+                  <option value="shoulders">Shoulders</option>
+                  <option value="core">Core</option>
+                  <option value="unlisted">Unlisted</option>
+                </Select>
               </FormControl>
               <Button type="submit" colorScheme="blue" width="full">Submit</Button>
             </VStack>
