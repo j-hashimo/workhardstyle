@@ -5,7 +5,7 @@ const Workout = require('../models/workoutModel');
 // Create a new workout
 exports.createWorkout = async (req, res, next) => {
     try {
-        const { name, weight, sets, reps, machine_settings } = req.body;
+        const { name, weight, sets, reps, machine_settings, muscleGroup } = req.body;
         // Add the user ID from the verified token to the workout
         const userId = req.user.id; // Assuming the user ID is stored in req.user by your auth middleware
 
@@ -15,7 +15,8 @@ exports.createWorkout = async (req, res, next) => {
             weight,
             sets,
             reps,
-            machine_settings
+            machine_settings,
+            muscleGroup
         });
         res.status(201).json(newWorkout);
     } catch (error) {
@@ -49,11 +50,11 @@ exports.getWorkoutById = async (req, res, next) => {
 // Update a workout by ID
 exports.updateWorkoutById = async (req, res, next) => {
     try {
-        const { name, weight, sets, reps, machine_settings } = req.body;
+        const { name, weight, sets, reps, machine_settings, muscleGroup } = req.body;
         // Find the workout and update it only if the user owns the workout
         const updatedWorkout = await Workout.findOneAndUpdate(
             { _id: req.params.id, user: req.user.id }, 
-            { name, weight, sets, reps, machine_settings }, 
+            { name, weight, sets, reps, machine_settings, muscleGroup }, 
             { new: true }
         );
         if (!updatedWorkout) {
