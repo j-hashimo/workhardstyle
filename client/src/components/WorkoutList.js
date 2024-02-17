@@ -37,6 +37,9 @@ const WorkoutList = () => {
     const { colorMode, toggleColorMode } = useColorMode();
     const toast = useToast();
 
+    const [groupedView, setGroupedView] = useState(false);
+    const [groupedWorkouts, setGroupedWorkouts] = useState({});
+
     useEffect(() => {
         fetchWorkouts();
     }, []);
@@ -52,6 +55,7 @@ const WorkoutList = () => {
             };
             const response = await axios.get('http://localhost:5000/api/workouts', config);
             setWorkouts(response.data);
+            groupWorkoutsByMuscleGroup(response.data);
         } catch (error) {
             console.error('Error fetching workouts:', error);
         }
@@ -96,6 +100,22 @@ const WorkoutList = () => {
         setEditingWorkout({ ...editingWorkout, [field]: e.target.value });
     };
 
+    const groupWorkoutsByMuscleGroup = (workouts) => {
+        const groups = workouts.reduce((acc, workout) => {
+            const group = workout.muscleGroup || 'Unlisted';
+            if (!acc[group]) {
+                acc[group] = [];
+            }
+            acc[group].push(workout);
+            return acc;
+        }, {});
+        setGroupedWorkouts(groups);
+    };
+
+    const toggleView = () => {
+        setGroupedView(!groupedView);
+    };
+
     return (
         <ChakraProvider theme={theme}>
             <Box bg={colorMode === 'dark' ? 'gray.900' : 'gray.50'} minH="100vh" py={20}>
@@ -103,7 +123,7 @@ const WorkoutList = () => {
                     <Heading mb={6} color={colorMode === 'dark' ? 'whiteAlpha.900' : 'gray.700'}>
                         Your Workouts
                     </Heading>
-                    
+                    <Button onClick={toggleView} mb={4}>{groupedView ? 'Show Ungrouped View' : 'Show Grouped View'}</Button>
                     <VStack spacing={5}>
                         {workouts.map(workout => (
                             <Box 
