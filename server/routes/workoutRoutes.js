@@ -21,4 +21,8 @@ router.put('/:id', auth, workoutController.updateWorkoutById);
 // Route to delete a specific workout by ID
 router.delete('/:id', auth, workoutController.deleteWorkoutById);
 
+// New route to get workouts by muscle group
+router.get('/group/:muscleGroup', auth, workoutController.getWorkoutsByMuscleGroup);
+
+
 module.exports = router;

@@ -22,7 +22,7 @@ import {
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import WorkoutItem from './WorkoutItem';
-
+import { useNavigate } from 'react-router-dom';
 // Custom theme adjustments for dark mode
 const theme = extendTheme({
     config: {
@@ -40,6 +40,8 @@ const WorkoutList = () => {
 
     const [groupedView, setGroupedView] = useState(false);
     const [groupedWorkouts, setGroupedWorkouts] = useState({});
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchWorkouts();
@@ -128,7 +130,15 @@ const WorkoutList = () => {
                     {groupedView ? (
                         Object.entries(groupedWorkouts).map(([group, workouts]) => (
                             <Box key={group}>
-                                <Text fontSize="2xl" fontWeight="bold" mb={2}>{group}</Text>
+                            <Text
+                            fontSize="2xl"
+                            fontWeight="bold"
+                            mb={2}
+                            as="button"
+                            onClick={() => navigate(`/grouped-workouts/${group}`)} // Adjust the route as necessary
+                            >
+                                {group.toUpperCase()}
+                            </Text>
                                 {workouts.map((workout) => (
                                     <Box 
                                         key={workout._id} p={4} bg={colorMode === 'dark' ? 'gray.700' : 'white'} 

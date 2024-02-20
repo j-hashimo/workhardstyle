@@ -79,3 +79,18 @@ exports.deleteWorkoutById = async (req, res, next) => {
         next(error);
     }
 };
+
+
+// New function to get workouts by muscle group
+exports.getWorkoutsByMuscleGroup = async (req, res, next) => {
+    try {
+        const muscleGroup = req.params.muscleGroup;
+        const workouts = await Workout.find({ 
+            muscleGroup: muscleGroup,
+            user: req.user.id // Ensure workouts are fetched for the logged-in user
+        });
+        res.status(200).json(workouts);
+    } catch (error) {
+        next(error);
+    }
+};
