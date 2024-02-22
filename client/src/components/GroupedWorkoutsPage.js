@@ -83,6 +83,7 @@ const GroupedWorkoutsPage = () => {
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}
                 handleChange={handleChange}
+                isGroupedPage={true}
               />
             ))}
           </VStack>

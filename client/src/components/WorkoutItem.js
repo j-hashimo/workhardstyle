@@ -1,9 +1,9 @@
 import React from 'react';
-import { VStack, HStack, Input, Button, IconButton, Text, Select } from '@chakra-ui/react';
+import { VStack, HStack, Input, Button, IconButton, Text, Select, Checkbox } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
 
-const WorkoutItem = ({ workout, editingWorkout, setEditingWorkout, handleSave, handleEdit, handleDelete, handleChange }) => {
+const WorkoutItem = ({ workout, editingWorkout, setEditingWorkout, handleSave, handleEdit, handleDelete, handleChange, isGroupedPage }) => {
   return (
     editingWorkout && editingWorkout._id === workout._id ? (
       <VStack spacing={3}>
@@ -33,7 +33,11 @@ const WorkoutItem = ({ workout, editingWorkout, setEditingWorkout, handleSave, h
           {workout.machine_settings && <Text>Machine Settings: {workout.machine_settings}</Text>}
           <HStack spacing={3}>
               <Button leftIcon={<EditIcon />} colorScheme="yellow" onClick={() => handleEdit(workout)}>Edit</Button>
-              <IconButton aria-label="Delete workout" icon={<DeleteIcon />} colorScheme="red" onClick={() => handleDelete(workout._id)} />
+              {!isGroupedPage ? (
+                <IconButton aria-label="Delete workout" icon={<DeleteIcon />} colorScheme="red" onClick={() => handleDelete(workout._id)} />
+              ) : (
+                <Checkbox colorScheme="green" defaultIsChecked>Completed</Checkbox> // Example checkbox
+              )}
           </HStack>
       </VStack>
     )
