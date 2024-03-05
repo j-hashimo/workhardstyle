@@ -32,6 +32,7 @@ app.use(cors()); // Enables CORS
 app.use(bodyParser.json()); // Parses incoming requests with JSON payloads
 
 // API Routes
+// at the beginning, do not add these, add them once the routes are defined
 app.use('/api/auth', authRoutes);
 app.use('/api/workouts', workoutRoutes);
 

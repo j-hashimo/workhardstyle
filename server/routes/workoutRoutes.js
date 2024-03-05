@@ -4,7 +4,8 @@ const express = require('express');
 const router = express.Router();
 
 const workoutController = require('../controllers/workoutController');
-const auth = require('../middleware/auth'); // Import the auth middleware
+const auth = require('../middleware/auth'); // Import the auth middleware to every route that needs authentication 
+// so for every route, it contains 
 
 // Route to create a new workout
 router.post('/', auth, workoutController.createWorkout);
