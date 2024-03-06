@@ -2,7 +2,15 @@
 
 const Workout = require('../models/workoutModel');
 
+// all controller functions use a try catch block. the try block does the intended action for that function, while the error block is what shows if try block fails (i.e. if there is an error). these controller functions are asynchronous, allowing Node.js to continue executing other code while waiting for the database operation to complete - it is more convenient and flexible
+
+
 // Create a new workout
+// this function does 3 things: 1) extracts the parameters of the model from the request, 2) stores said parameters into the variable newWorkout, created from the schema of the workout model (the create a method is from mongoose), and 3) sends said variable into the response.
+// if it doesn't work it returns an error
+
+
+
 exports.createWorkout = async (req, res, next) => {
     try {
         const { name, weight, sets, reps, machine_settings, muscleGroup } = req.body;
@@ -23,6 +31,7 @@ exports.createWorkout = async (req, res, next) => {
         next(error);
     }
 };
+
 
 // Get all workouts
 exports.getAllWorkouts = async (req, res, next) => {
