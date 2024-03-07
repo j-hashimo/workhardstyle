@@ -71,6 +71,13 @@ exports.getWorkoutById = async (req, res, next) => {
 };
 
 // Update a workout by ID
+// stores workout schema, then uses findOneAndUpdate method to rewrite workout schema in order to update
+// The findByIdAndUpdate method is a Mongoose method that is used to find a document by its ID and update it in a single operation. It belongs to the Mongoose model, which in this case is Workout. This method takes several parameters:
+
+// The first parameter is the ID of the document to update, which is obtained from req.params.id where req.params contains route parameters (in this case, the workout's ID).
+// The second parameter is an object containing the updates to apply to the document. This object is { name, weight, sets, reps, machine_settings } in your function.
+// The third parameter is an options object. Setting { new: true } as an option tells Mongoose to return the modified document rather than the original. If { new: true } is not set, Mongoose will return the document as it was before the update was applied.
+
 exports.updateWorkoutById = async (req, res, next) => {
     try {
         const { name, weight, sets, reps, machine_settings, muscleGroup } = req.body;
