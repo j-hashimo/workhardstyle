@@ -43,6 +43,20 @@ exports.getAllWorkouts = async (req, res, next) => {
     }
 };
 
+// old getAllWorkouts:
+//finds workout object (each object has an id)
+// exports.getWorkoutById = async (req, res, next) => {
+//     try {
+//         const workout = await Workout.findById(req.params.id);
+//         if (!workout) {
+//             return res.status(404).json({ message: 'Workout not found' });
+//         }
+//         res.status(200).json(workout);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
 // Get a workout by ID
 exports.getWorkoutById = async (req, res, next) => {
     try {
