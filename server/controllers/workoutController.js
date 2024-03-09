@@ -97,6 +97,10 @@ exports.updateWorkoutById = async (req, res, next) => {
 };
 
 // Delete a workout by ID
+//findOneAndDelete method from mongoose is passed to delete the selected workout, which is id'd by req.params.id, i.e. from the request. 
+// if the workout is not found or if the user doesn't own the workout, it returns an error
+
+
 exports.deleteWorkoutById = async (req, res, next) => {
     try {
         // Find the workout and delete it only if the user owns the workout
