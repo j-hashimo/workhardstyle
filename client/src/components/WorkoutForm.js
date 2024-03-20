@@ -15,7 +15,7 @@ import {
   Select,
 } from '@chakra-ui/react';
 
-const WorkoutForm = ({ onAdd }) => {
+const WorkoutForm = () => {
   const [name, setName] = useState('');
   const [weight, setWeight] = useState(0);
   const [sets, setSets] = useState(0);
@@ -37,7 +37,7 @@ const WorkoutForm = ({ onAdd }) => {
       };
 
       const response = await axios.post('http://localhost:5000/api/workouts', workout, config);
-      onAdd(response.data);
+      
     } catch (error) {
       console.error('Error adding workout:', error);
     }
