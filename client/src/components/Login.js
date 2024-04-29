@@ -28,7 +28,7 @@ const Login = () => {
       { 
         email: loginEmail,
         password: loginPassword
-      });
+      }); //note: the loginEmail and loginPassword are set to the ones the user entered due to onChange on the forms
       dispatch(authSuccess(response.data)); // Dispatch authSuccess with the response data
       navigate('/'); // Redirect to the homepage or dashboard on successful login
     } catch (error) {

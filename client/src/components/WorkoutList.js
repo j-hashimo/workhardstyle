@@ -135,7 +135,7 @@ const WorkoutList = () => {
                             fontWeight="bold"
                             mb={2}
                             as="button"
-                            onClick={() => navigate(`/grouped-workouts/${group}`)} // Adjust the route as necessary
+                            onClick={() => navigate(`/grouped-workouts/${group}`)} //this directs the user to the grouped workouts page
                             >
                                 {group.toUpperCase()}
                             </Text>

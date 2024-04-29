@@ -25,7 +25,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/auth/signup', { email, password });
-      dispatch(authSuccess(response.data));
+      dispatch(authSuccess(response.data)); // this integrates the backend with the state updating that is done in redux
       // navigate to login page or dashboard here if needed
     } catch (error) {
       console.error('Signup failed:', error.response.data);
