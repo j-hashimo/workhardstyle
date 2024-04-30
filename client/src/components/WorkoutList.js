@@ -119,6 +119,27 @@ const WorkoutList = () => {
         setGroupedView(!groupedView);
     };
 
+    const handleSaveHistory = async (workout) => {
+        try {
+            const { weight, sets, reps, _id } = workout;  // Destructure the needed properties
+            if (!weight || !sets || !reps) {
+                console.error('Missing required workout parameters');
+                return;
+            }
+            const historyData = { weight, sets, reps };
+            const response = await axios.post(`http://localhost:5000/api/workouts/${_id}/history`, historyData, {
+                headers: { 'x-auth-token': localStorage.getItem('token') }
+            });
+            console.log('History saved:', response.data); // Optionally handle response
+        } catch (error) {
+            console.error('Error saving workout history:', error);
+        }
+    };
+
+    const handleViewHistory = (workoutId) => {
+        navigate(`/workout-history/${workoutId}`);
+    };
+
     return (
         <ChakraProvider theme={theme}>
             <Box bg={colorMode === 'dark' ? 'gray.900' : 'gray.50'} minH="100vh" py={20}>
@@ -157,6 +178,8 @@ const WorkoutList = () => {
                                             handleEdit={handleEdit}
                                             handleDelete={handleDelete}
                                             handleChange={handleChange}
+                                            handleSaveHistory={handleSaveHistory} 
+                                            handleViewHistory={handleViewHistory} 
                                         />
                                     </Box>
                                 ))}
@@ -182,6 +205,8 @@ const WorkoutList = () => {
                                         handleEdit={handleEdit}
                                         handleDelete={handleDelete}
                                         handleChange={handleChange}
+                                        handleSaveHistory={() => handleSaveHistory(workout)}
+                                        handleViewHistory={() => handleViewHistory(workout._id)} 
                                     />
                                 </Box>
                             ))}

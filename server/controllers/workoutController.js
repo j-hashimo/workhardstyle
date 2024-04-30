@@ -128,3 +128,74 @@ exports.getWorkoutsByMuscleGroup = async (req, res, next) => {
         next(error);
     }
 };
+
+// Add to workout history
+exports.addHistory = async (req, res) => {
+    try {
+        const { weight, sets, reps } = req.body;
+        if (weight == null || sets == null || reps == null) {
+            return res.status(400).json({ message: 'Missing weight, sets, or reps' });
+        }
+
+        const workout = await Workout.findById(req.params.id);
+        if (!workout) {
+            return res.status(404).json({ message: 'Workout not found' });
+        }
+
+        // Check if last history entry is the same as the current one
+        const lastEntry = workout.history[workout.history.length - 1];
+        if (lastEntry && lastEntry.weight === weight && lastEntry.sets === sets && lastEntry.reps === reps) {
+            return res.status(409).json({ message: 'No changes to save' });  // Conflict response if identical
+        }
+
+        workout.history.push({ weight, sets, reps, date: new Date() });  // Also add the current date when saving history
+        await workout.save();
+        res.status(201).json(workout.history[workout.history.length - 1]);  // Respond with the new history record
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+
+// Get workout history
+exports.getHistory = async (req, res) => {
+    try {
+        const workout = await Workout.findById(req.params.id).select('history');
+        if (!workout) {
+            return res.status(404).json({ message: 'Workout not found' });
+        }
+        res.status(200).json(workout.history.length > 0 ? workout.history : []);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+// Assuming your Workout model has a history array defined
+// Delete a record from workout history
+// Delete a record from workout history
+exports.deleteHistoryRecord = async (req, res) => {
+    try {
+        const { workoutId, recordId } = req.params;
+        const workout = await Workout.findById(workoutId);
+        if (!workout) {
+            return res.status(404).json({ message: 'Workout not found' });
+        }
+
+        // Use the $pull operator to remove the item directly
+        const updateResult = await Workout.findByIdAndUpdate(workoutId, {
+            $pull: { history: { _id: recordId } }
+        }, { new: true });
+
+        if (!updateResult) {
+            return res.status(404).json({ message: 'History record not found' });
+        }
+
+        res.status(204).send();
+    } catch (error) {
+        console.error('Error in deleteHistoryRecord:', error);
+        res.status(500).send(error.message);
+    }
+};
+
+
+

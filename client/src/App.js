@@ -11,6 +11,7 @@ import Navbar from './components/Navbar';
 import WorkoutList from './components/WorkoutList';
 import WorkoutForm from './components/WorkoutForm';
 import GroupedWorkoutsPage from './components/GroupedWorkoutsPage';
+import WorkoutHistory from './components/WorkoutHistory';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="/workoutlist" element={<WorkoutList />} />
             <Route path="/addworkout" element={<WorkoutForm />} />
             <Route path="/grouped-workouts/:muscleGroup" element={<GroupedWorkoutsPage />} />
+            <Route path="/workout-history/:workoutId" element={<WorkoutHistory />} />
             {/* Add other routes here */}
           </Routes>
         </div>

@@ -2,6 +2,14 @@
 
 const mongoose = require('mongoose');
 
+const workoutHistorySchema = new mongoose.Schema({
+    weight: { type: String, required: true },
+    reps: { type: Number, required: true },
+    sets: { type: Number, required: true },
+    date: { type: Date, default: Date.now }
+});
+
+
 const workoutSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -32,6 +40,7 @@ const workoutSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    history: [workoutHistorySchema],
 }, {
     timestamps: true // Adds createdAt and updatedAt timestamps
 });

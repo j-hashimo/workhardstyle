@@ -25,5 +25,8 @@ router.delete('/:id', auth, workoutController.deleteWorkoutById);
 // New route to get workouts by muscle group
 router.get('/group/:muscleGroup', auth, workoutController.getWorkoutsByMuscleGroup);
 
+router.post('/:id/history', auth, workoutController.addHistory);
+router.get('/:id/history', auth, workoutController.getHistory);
+router.delete('/:workoutId/history/:recordId', auth, workoutController.deleteHistoryRecord);
 
 module.exports = router;
