@@ -120,6 +120,8 @@ const WorkoutList = () => {
     };
 
     const handleSaveHistory = async (workout) => {
+        
+    
         try {
             const { weight, sets, reps, _id } = workout;  // Destructure the needed properties
             if (!weight || !sets || !reps) {
@@ -130,12 +132,25 @@ const WorkoutList = () => {
             const response = await axios.post(`http://localhost:5000/api/workouts/${_id}/history`, historyData, {
                 headers: { 'x-auth-token': localStorage.getItem('token') }
             });
-            console.log('History saved:', response.data); // Optionally handle response
+            if (response.status === 201) {
+                console.log('History saved:', response.data); // Optionally handle response
+            }
         } catch (error) {
-            console.error('Error saving workout history:', error);
+            if (error.response && error.response.status === 409) {
+                // Handling no changes to save with a toast
+                toast({
+                    title: "No changes to save.",
+                    description: "This workout progress history is already saved.",
+                    status: "info",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top"
+                });
+            } else {
+                console.error('Error saving workout history:', error);
+            }
         }
     };
-
     const handleViewHistory = (workoutId) => {
         navigate(`/workout-history/${workoutId}`);
     };
