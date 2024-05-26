@@ -49,7 +49,7 @@ export const loadUser = () => async dispatch => {
         try {
             const response = await axios.get('http://localhost:5000/api/auth/me', {
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'x-auth-token': token
                 }
             });
             dispatch(userLoaded(response.data));
