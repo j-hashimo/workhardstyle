@@ -1,3 +1,5 @@
+// auth.js in /server/middleware directory
+
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 
@@ -10,7 +12,7 @@ const auth = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded.user;
         next();
     } catch (err) {

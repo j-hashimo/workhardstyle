@@ -3,7 +3,6 @@ const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel'); // Adjust the path according to your project structure
 const router = express.Router();
-const auth = require('../middleware/auth'); // Import the auth middleware
 const { JWT_SECRET } = process.env;
 
 // Route to register (signup) a new user
@@ -28,7 +27,7 @@ router.post('/signup', async (req, res) => {
         const payload = { user: { id: user.id } };
 
         // Sign the JWT token with the user ID payload
-        jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
+        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
             if (err) throw err;
             res.json({ token });
         });
@@ -58,7 +57,7 @@ router.post('/login', async (req, res) => {
         const payload = { user: { id: user.id } };
 
         // Sign the JWT token with the user ID payload
-        jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
+        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
             if (err) throw err;
             // Include user information in the response
             res.json({
@@ -76,15 +75,5 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Route to get the authenticated user's details
-router.get('/me', auth, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id).select('-password');
-        res.json(user);
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send('Server error');
-    }
-});
 
 module.exports = router;

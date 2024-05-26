@@ -1,3 +1,5 @@
+// authSlice.js
+
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -49,7 +51,7 @@ export const loadUser = () => async dispatch => {
         try {
             const response = await axios.get('http://localhost:5000/api/auth/me', {
                 headers: {
-                    'x-auth-token': token
+                    'Authorization': `Bearer ${token}`
                 }
             });
             dispatch(userLoaded(response.data));
