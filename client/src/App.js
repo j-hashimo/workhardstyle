@@ -1,9 +1,10 @@
 // App.js
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import store from './redux/store';
+import { loadUser } from './redux/authSlice';
 import HomePage from './components/HomePage';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -13,10 +14,21 @@ import WorkoutForm from './components/WorkoutForm';
 import GroupedWorkoutsPage from './components/GroupedWorkoutsPage';
 import WorkoutHistory from './components/WorkoutHistory';
 
+const AppInitializer = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUser());
+  }, [dispatch]);
+
+  return null;
+};
+
 const App = () => {
   return (
     <Provider store={store}>
       <Router>
+        <AppInitializer />
         <div className="App">
           <Navbar />
           <Routes>

@@ -1,5 +1,3 @@
-// Navbar.js
-
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +5,6 @@ import { logout } from '../redux/authSlice';
 import { Flex, Box, Button, Text, IconButton, useColorMode } from '@chakra-ui/react';
 import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics'; // Import the icon
-
 
 const Navbar = () => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -36,7 +33,7 @@ const Navbar = () => {
                 />
                 <Flex alignItems={'center'}>
                     <SportsGymnasticsIcon style={{ color: colorMode === 'dark' ? 'white' : 'black', marginRight: '8px' }} />
-                    <Button variant={'ghost'} colorScheme="gray" variant={'ghost'} onClick={() => handleNavigate('/')}>
+                    <Button variant={'ghost'} colorScheme="gray" onClick={() => handleNavigate('/')}>
                         WorkHardStyle
                     </Button>
                 </Flex>
@@ -57,7 +54,7 @@ const Navbar = () => {
                             <Button colorScheme="gray" variant={'ghost'} onClick={() => handleNavigate('/addworkout')}>
                                 Add Workout
                             </Button>
-                            <Text color="white" px={3}>{userEmail}</Text>
+                            <Text color="gray.600" px={3}>{userEmail}</Text>
                             <Button colorScheme="red" onClick={handleLogout}>
                                 Logout
                             </Button>

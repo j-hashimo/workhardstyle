@@ -1,11 +1,10 @@
-// Login.js in /src/components
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSuccess, authFail } from '../redux/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { Box, VStack, Input, Button, FormControl, FormLabel, Heading, Text, useColorModeValue } from '@chakra-ui/react';
+
 const Login = () => {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -20,7 +19,6 @@ const Login = () => {
     }
   }, [isAuthenticated, navigate]);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -29,8 +27,9 @@ const Login = () => {
         email: loginEmail,
         password: loginPassword
       }); //note: the loginEmail and loginPassword are set to the ones the user entered due to onChange on the forms
+      localStorage.setItem('token', response.data.token); // Save token to localStorage
       dispatch(authSuccess(response.data)); // Dispatch authSuccess with the response data
-      navigate('/'); // Redirect to the homepage or dashboard on successful login
+      navigate('/workoutlist'); // Redirect to workout list on successful login
     } catch (error) {
       console.error('Error logging in:', error.response?.data.msg || error.message);
       setErrorMessage(error.response?.data.msg || "An error occurred while logging in.");
