@@ -49,7 +49,7 @@ export const loadUser = () => async dispatch => {
     if (localStorage.getItem('token')) {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.get('http://localhost:5000/api/auth/me', {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/auth/me`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

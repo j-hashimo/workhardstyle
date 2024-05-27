@@ -13,6 +13,11 @@ require('dotenv').config();
 
 const app = express();
 
+// Enable CORS
+app.use(cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:3000'
+}));
+
 app.use((req, res, next) => {
     console.log(req.path, req.method);
     next();
@@ -27,7 +32,6 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     });
 
 // Middleware
-app.use(cors()); // Enables CORS
 app.use(bodyParser.json()); // Parses incoming requests with JSON payloads
 
 // API Routes

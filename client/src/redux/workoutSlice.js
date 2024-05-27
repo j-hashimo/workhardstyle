@@ -13,25 +13,25 @@ const initialState = {
 
 // Async thunk to fetch all workouts
 export const fetchWorkouts = createAsyncThunk('workouts/fetchWorkouts', async () => {
-  const response = await axios.get('http://localhost:5000/api/workouts');
+  const response = await axios.get(`${process.env.REACT_APP_API_URL}/workouts`);
   return response.data;
 });
 
 // Async thunk to create a new workout
 export const createWorkout = createAsyncThunk('workouts/createWorkout', async (workoutData) => {
-  const response = await axios.post('http://localhost:5000/api/workouts', workoutData);
+  const response = await axios.post(`${process.env.REACT_APP_API_URL}/workouts`, workoutData);
   return response.data;
 });
 
 // Async thunk to update a workout
 export const updateWorkout = createAsyncThunk('workouts/updateWorkout', async ({ id, workoutData }) => {
-  const response = await axios.put(`http://localhost:5000/api/workouts/${id}`, workoutData);
+  const response = await axios.put(`${process.env.REACT_APP_API_URL}/workouts/${id}`, workoutData);
   return response.data;
 });
 
 // Async thunk to delete a workout
 export const deleteWorkout = createAsyncThunk('workouts/deleteWorkout', async (id) => {
-  await axios.delete(`http://localhost:5000/api/workouts/${id}`);
+  await axios.delete(`${process.env.REACT_APP_API_URL}/workouts/${id}`);
   return id;
 });
 
