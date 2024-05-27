@@ -9,9 +9,6 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const workoutRoutes = require('./routes/workoutRoutes');
 
-// Import middleware
-// const errorHandler = require('./utils/errorHandler');
-
 // Environment variables
 require('dotenv').config();
 
@@ -25,17 +22,23 @@ app.use((req, res, next) => {
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB Connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    .catch(err => {
+        console.error('MongoDB connection error:', err.message);
+        process.exit(1);
+    });
 
 // Middleware
 app.use(cors()); // Enables CORS
 app.use(bodyParser.json()); // Parses incoming requests with JSON payloads
 
 // API Routes
-// at the beginning, do not add these, add them once the routes are defined
 app.use('/api/auth', authRoutes);
 app.use('/api/workouts', workoutRoutes);
 
+// Fallback route
+app.get('*', (req, res) => {
+    res.status(404).send('Route not found');
+});
 
 // Start the server
 const PORT = process.env.PORT || 5000;
