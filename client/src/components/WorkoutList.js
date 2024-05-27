@@ -1,5 +1,3 @@
-// WorkoutList.js
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { 
@@ -23,24 +21,22 @@ import {
 import { EditIcon, DeleteIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import WorkoutItem from './WorkoutItem';
 import { useNavigate } from 'react-router-dom';
+
 // Custom theme adjustments for dark mode
 const theme = extendTheme({
     config: {
       initialColorMode: 'dark',
       useSystemColorMode: false,
     },
-  });
+});
 
 const WorkoutList = () => {
     const [workouts, setWorkouts] = useState([]);
     const [editingWorkout, setEditingWorkout] = useState(null);
-
     const { colorMode, toggleColorMode } = useColorMode();
     const toast = useToast();
-
     const [groupedView, setGroupedView] = useState(false);
     const [groupedWorkouts, setGroupedWorkouts] = useState({});
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -50,15 +46,18 @@ const WorkoutList = () => {
     const fetchWorkouts = async () => {
         try {
             const token = localStorage.getItem('token'); // Retrieve the token
-            
             const config = {
                 headers: {
                     'x-auth-token': token
                 }
             };
-            const response = await axios.get('${process.env.REACT_APP_API_URL}/workouts', config);
-            setWorkouts(response.data);
-            groupWorkoutsByMuscleGroup(response.data);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/workouts`, config);
+            if (Array.isArray(response.data)) {
+                setWorkouts(response.data);
+                groupWorkoutsByMuscleGroup(response.data);
+            } else {
+                throw new Error('Unexpected response format');
+            }
         } catch (error) {
             console.error('Error fetching workouts:', error);
         }
@@ -120,8 +119,6 @@ const WorkoutList = () => {
     };
 
     const handleSaveHistory = async (workout) => {
-        
-    
         try {
             const { weight, sets, reps, _id } = workout;  // Destructure the needed properties
             if (!weight || !sets || !reps) {
@@ -151,6 +148,7 @@ const WorkoutList = () => {
             }
         }
     };
+
     const handleViewHistory = (workoutId) => {
         navigate(`/workout-history/${workoutId}`);
     };
@@ -166,15 +164,15 @@ const WorkoutList = () => {
                     {groupedView ? (
                         Object.entries(groupedWorkouts).map(([group, workouts]) => (
                             <Box key={group}>
-                            <Text
-                            fontSize="2xl"
-                            fontWeight="bold"
-                            mb={2}
-                            as="button"
-                            onClick={() => navigate(`/grouped-workouts/${group}`)} //this directs the user to the grouped workouts page
-                            >
-                                {group.toUpperCase()}
-                            </Text>
+                                <Text
+                                    fontSize="2xl"
+                                    fontWeight="bold"
+                                    mb={2}
+                                    as="button"
+                                    onClick={() => navigate(`/grouped-workouts/${group}`)} //this directs the user to the grouped workouts page
+                                >
+                                    {group.toUpperCase()}
+                                </Text>
                                 {workouts.map((workout) => (
                                     <Box 
                                         key={workout._id} p={4} bg={colorMode === 'dark' ? 'gray.700' : 'white'} 
@@ -227,7 +225,6 @@ const WorkoutList = () => {
                             ))}
                         </VStack>
                     )}
-                    
                 </Container>
             </Box>
         </ChakraProvider>
