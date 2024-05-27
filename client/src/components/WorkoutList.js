@@ -33,7 +33,7 @@ const theme = extendTheme({
 const WorkoutList = () => {
     const [workouts, setWorkouts] = useState([]);
     const [editingWorkout, setEditingWorkout] = useState(null);
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
     const toast = useToast();
     const [groupedView, setGroupedView] = useState(false);
     const [groupedWorkouts, setGroupedWorkouts] = useState({});
@@ -59,7 +59,14 @@ const WorkoutList = () => {
                 throw new Error('Unexpected response format');
             }
         } catch (error) {
-            console.error('Error fetching workouts:', error);
+            console.error('Error fetching workouts:', error.message || error);
+            toast({
+                title: "Error fetching workouts",
+                description: error.message || "An unexpected error occurred",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            });
         }
     };
 
@@ -177,7 +184,6 @@ const WorkoutList = () => {
                                     <Box 
                                         key={workout._id} p={4} bg={colorMode === 'dark' ? 'gray.700' : 'white'} 
                                         boxShadow="md"
-                                        p={5}
                                         rounded="md"
                                         borderWidth="1px"
                                         borderColor={colorMode === 'dark' ? 'gray.600' : 'gray.200'}
@@ -204,7 +210,6 @@ const WorkoutList = () => {
                                 <Box 
                                     key={workout._id} p={4} bg={colorMode === 'dark' ? 'gray.700' : 'white'} 
                                     boxShadow="md"
-                                    p={5}
                                     rounded="md"
                                     borderWidth="1px"
                                     borderColor={colorMode === 'dark' ? 'gray.600' : 'gray.200'}
@@ -225,6 +230,7 @@ const WorkoutList = () => {
                             ))}
                         </VStack>
                     )}
+                    
                 </Container>
             </Box>
         </ChakraProvider>

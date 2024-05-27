@@ -1,5 +1,3 @@
-// Login.js in /src/components
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,7 +26,7 @@ const Login = () => {
       { 
         email: loginEmail,
         password: loginPassword
-      }); //note: the loginEmail and loginPassword are set to the ones the user entered due to onChange on the forms
+      });
       localStorage.setItem('token', response.data.token); // Save token to localStorage
       dispatch(authSuccess(response.data)); // Dispatch authSuccess with the response data
       navigate('/workoutlist'); // Redirect to workout list on successful login
