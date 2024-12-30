@@ -15,7 +15,7 @@ const app = express();
 
 // Enable CORS
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000'
+    origin: 'http://localhost:3000',
 }));
 
 app.use((req, res, next) => {

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { authSuccess, authFail } from '../redux/authSlice';
+import { useNavigate } from 'react-router-dom';
 import { 
   Box, 
   VStack, 
@@ -20,16 +21,19 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, { email, password });
-      dispatch(authSuccess(response.data)); // this integrates the backend with the state updating that is done in redux
-      // navigate to login page or dashboard here if needed
+        const response = await axios.post(`http://localhost:5000/api/auth/signup`, { email, password });
+        // Only navigate to the login page after successful signup
+        if (response.status === 201) {
+            navigate('/login'); // Navigate to login page
+        }
     } catch (error) {
-      console.error('Signup failed:', error.response.data);
-      dispatch(authFail());
+        console.error('Signup failed:', error.response?.data || error.message);
+        dispatch(authFail());
     }
   };
 

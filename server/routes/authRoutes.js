@@ -29,13 +29,19 @@ router.post('/signup', async (req, res) => {
         // Sign the JWT token with the user ID payload
         jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
             if (err) throw err;
-            res.json({ token });
+
+            // Respond with a success message along with the token
+            res.status(201).json({
+                msg: 'User registered successfully',
+                token,
+            });
         });
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server error');
     }
 });
+
 
 // Route to login a user
 router.post('/login', async (req, res) => {

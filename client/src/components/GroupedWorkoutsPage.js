@@ -16,7 +16,7 @@ const GroupedWorkoutsPage = () => {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { 'x-auth-token': token } };
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/workouts/group/${muscleGroup}`, config);
+      const response = await axios.get(`http://localhost:5000/api/workouts/group/${muscleGroup}`, config);
       setWorkouts(response.data);
     } catch (error) {
       console.error('Error fetching grouped workouts:', error);
@@ -40,7 +40,7 @@ const GroupedWorkoutsPage = () => {
           'x-auth-token': token
         }
       };
-      await axios.delete(`${process.env.REACT_APP_API_URL}/workouts/${id}`, config);
+      await axios.delete(`http://localhost:5000/api/workouts/${id}`, config);
       await fetchGroupedWorkouts(); // Calls the function to refresh the workout list
     } catch (error) {
       console.error('Error deleting workout:', error);
@@ -59,7 +59,7 @@ const GroupedWorkoutsPage = () => {
                 'x-auth-token': token
             }
         };
-        await axios.put(`${process.env.REACT_APP_API_URL}/workouts/${editingWorkout._id}`, editingWorkout, config);
+        await axios.put(`http://localhost:5000/api/workouts/${editingWorkout._id}`, editingWorkout, config);
         setEditingWorkout(null);
         fetchGroupedWorkouts();
     } catch (error) {

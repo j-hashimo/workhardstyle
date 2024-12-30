@@ -14,7 +14,7 @@ const WorkoutHistory = () => {
 
     const fetchHistory = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/workouts/${workoutId}/history`, {
+            const response = await axios.get(`http://localhost:5000/api/workouts/${workoutId}/history`, {
                 headers: { 'x-auth-token': localStorage.getItem('token') }
             });
             setHistory(response.data);
@@ -25,7 +25,7 @@ const WorkoutHistory = () => {
 
     const handleDeleteHistory = async (recordId) => {
         try {
-            await axios.delete(`${process.env.REACT_APP_API_URL}/workouts/${workoutId}/history/${recordId}`, {
+            await axios.delete(`http://localhost:5000/api/workouts/${workoutId}/history/${recordId}`, {
                 headers: { 'x-auth-token': localStorage.getItem('token') }
             });
             fetchHistory(); // Refresh history after deletion
