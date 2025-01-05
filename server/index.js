@@ -14,8 +14,21 @@ require('dotenv').config();
 const app = express();
 
 // Enable CORS
+const allowedOrigins = [
+    'http://localhost:3000', // Local development
+    'https://workhardstyle-client-iyxtzjx0l-jhashimos-projects.vercel.app', // Vercel deployment
+];
+
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: (origin, callback) => {
+        // Allow requests with no origin (e.g., mobile apps or curl)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
 }));
 
 app.use((req, res, next) => {
