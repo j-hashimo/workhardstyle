@@ -16,7 +16,7 @@ const app = express();
 // Enable CORS
 const allowedOrigins = [
     'http://localhost:3000', // Local development
-    'https://workhardstyle-client-iyxtzjx0l-jhashimos-projects.vercel.app', // Vercel deployment
+    'https://workhardstyle-client.vercel.app/', // Vercel deployment
 ];
 
 app.use(cors({
