@@ -51,7 +51,7 @@ const WorkoutList = () => {
                     'x-auth-token': token
                 }
             };
-            const response = await axios.get(`http://localhost:5000/api/workouts`, config);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/workouts`, config);
             if (Array.isArray(response.data)) {
                 setWorkouts(response.data);
                 groupWorkoutsByMuscleGroup(response.data);
@@ -78,7 +78,7 @@ const WorkoutList = () => {
                     'x-auth-token': token
                 }
             };
-            await axios.delete(`http://localhost:5000/api/workouts/${id}`, config);
+            await axios.delete(`${process.env.REACT_APP_API_URL}/api/workouts/${id}`, config);
             fetchWorkouts();
         } catch (error) {
             console.error('Error deleting workout:', error);
@@ -97,7 +97,7 @@ const WorkoutList = () => {
                     'x-auth-token': token
                 }
             };
-            await axios.put(`http://localhost:5000/api/workouts/${editingWorkout._id}`, editingWorkout, config);
+            await axios.put(`${process.env.REACT_APP_API_URL}/api/workouts/${editingWorkout._id}`, editingWorkout, config);
             setEditingWorkout(null);
             fetchWorkouts();
         } catch (error) {
@@ -133,7 +133,7 @@ const WorkoutList = () => {
                 return;
             }
             const historyData = { weight, sets, reps };
-            const response = await axios.post(`http://localhost:5000/api/workouts/${_id}/history`, historyData, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/workouts/${_id}/history`, historyData, {
                 headers: { 'x-auth-token': localStorage.getItem('token') }
             });
             if (response.status === 201) {

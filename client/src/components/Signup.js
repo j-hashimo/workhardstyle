@@ -26,7 +26,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post(`http://localhost:5000/api/auth/signup`, { email, password });
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/signup`, { email, password });
         // Only navigate to the login page after successful signup
         if (response.status === 201) {
             navigate('/login'); // Navigate to login page

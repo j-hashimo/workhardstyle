@@ -36,7 +36,7 @@ const WorkoutForm = () => {
         }
       };
 
-      const response = await axios.post(`http://localhost:5000/api/workouts`, workout, config);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/workouts`, workout, config);
       
     } catch (error) {
       console.error('Error adding workout:', error);
