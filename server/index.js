@@ -16,7 +16,7 @@ const app = express();
 // Enable CORS
 const allowedOrigins = [
     'http://localhost:3000', // Local development
-    'https://workhardstyle-client.vercel.app/', // Vercel deployment
+    'https://workhardstyle-client.vercel.app', // Vercel deployment
 ];
 
 app.use(cors({
@@ -31,6 +31,10 @@ app.use(cors({
     },
 }));
 
+// Handle preflight requests
+app.options('*', cors());
+
+// Log requests
 app.use((req, res, next) => {
     console.log(req.path, req.method);
     next();
@@ -50,8 +54,6 @@ app.use(bodyParser.json()); // Parses incoming requests with JSON payloads
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/workouts', workoutRoutes);
-
-
 
 // Start the server
 const PORT = process.env.PORT || 5000;
